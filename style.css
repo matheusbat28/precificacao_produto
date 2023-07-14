@@ -54,6 +54,27 @@ body {
     padding-bottom: 15px;
 }
 
+.resposta {
+    display: grid;
+    gap: 5px;
+    grid-template-columns: repeat(3, 1fr);
+    height: auto;
+}
+
+.reposta-corpo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+}
+
+.reposta-titulo {
+    border: 2px solid #000;
+    color: #000;
+    font-weight: bold;
+}
+
+dados-resposta input,
 .dados input {
     height: 30px;
     padding-left: 0.5rem;
