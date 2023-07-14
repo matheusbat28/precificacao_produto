@@ -42,10 +42,10 @@ $(document).ready(function () {
     const DESLOCAMENTO = 100 * 1.2
     const ALIMENTACAO = 50
     const BOTLETO = 0
-    const COMISSAO = 1
-    const TAXA_CARTAO = 2.50
-    const IMPOSTO = 5
-    const LUCRO = 20
+    const COMISSAO = 1 / 100
+    const TAXA_CARTAO = 2.50 / 100
+    const IMPOSTO = 5 / 100
+    const LUCRO = 20 / 100
 
 
     function calc_dado() {
@@ -54,16 +54,16 @@ $(document).ready(function () {
         gasto_mensal = salario + benificio + aluguel + agua + energia + telefone + internet + iptu + contador + manutencao
         salario_nominal = gasto_func / qtd_func
         gasto_fixo = gasto_mensal / horas
-        feria_func = (salario_nominal * FERIA) / 100
-        salario_13_func = (salario_nominal * SALARIO_13) / 100
-        fgts_func = (salario_nominal * FGTS) / 100
-        multa_func = (salario_nominal * MULTA) / 100
+        feria_func = (salario_nominal * (FERIA / 100))
+        salario_13_func = (salario_nominal * (SALARIO_13 / 100))
+        fgts_func = (salario_nominal * (FGTS / 100))
+        multa_func = (salario_nominal * (MULTA / 100))
         gasto_por_func = salario_nominal + feria_func + salario_13_func + fgts_func + multa_func + ajuda + vale + medica
         custo_mod = gasto_por_func / horas
-        hora_tec_colab = custo_mod + (gasto_fixo / qtd_func)
-        hora_tec_emp = (custo_mod * qtd_func) + horas
+        hora_tec_colab = custo_mod + (gasto_fixo / 2)
+        hora_tec_emp = (custo_mod * 2) + gasto_fixo
         hora_tec = hora_tec_emp * horas
-        preco_sug = (hora_tec + MATERIAL_DIRETO + DESLOCAMENTO + ALIMENTACAO + BOTLETO / (1 - (COMISSAO / 100 + TAXA_CARTAO / 100 + IMPOSTO / 100 + LUCRO / 100)))
+        preco_sug = (hora_tec + MATERIAL_DIRETO + DESLOCAMENTO + ALIMENTACAO + BOTLETO) / (1 - (COMISSAO + TAXA_CARTAO + IMPOSTO + LUCRO))
 
         atualizar_dados();
     }
@@ -75,10 +75,10 @@ $(document).ready(function () {
         $('#campo_delocamento').html(DESLOCAMENTO.toFixed(2))
         $('#campo_alimentacao').html(ALIMENTACAO.toFixed(2))
         $('#campo_boleto').html(BOTLETO.toFixed(2))
-        $('#campo_comissao').html(COMISSAO + '%')
-        $('#campo_taxa_cartao').html(TAXA_CARTAO + '%')
-        $('#campo_imposto').html(IMPOSTO + '%')
-        $('#campo_lucro').html(LUCRO + '%')
+        $('#campo_comissao').html(COMISSAO * 100 + '%')
+        $('#campo_taxa_cartao').html(TAXA_CARTAO * 100 + '%')
+        $('#campo_imposto').html(IMPOSTO * 100 + '%')
+        $('#campo_lucro').html(LUCRO * 100 + '%')
         $('#campo_preco-sug').html(preco_sug.toFixed(2))
 
     };
