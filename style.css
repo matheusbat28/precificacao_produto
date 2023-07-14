@@ -75,6 +75,7 @@ body {
 }
 
 dados-resposta input,
+.dados select,
 .dados input {
     height: 30px;
     padding-left: 0.5rem;

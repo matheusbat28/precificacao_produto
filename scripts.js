@@ -17,6 +17,13 @@ $(document).ready(function () {
     let comissao_real = 0
     let taxa_cartao_real = 0
     let imposto_real = 0
+    let lucro = 0
+    let imposto = 0
+    let comissao = 0
+    let boleto = 0
+
+
+
 
     //  input tela
     let salario = 0
@@ -37,20 +44,19 @@ $(document).ready(function () {
     let horas = 0
     let preco_sug = 0
     let lucro_por = 0
+    let descolamento = 0
+    let alimentacao = 0
+    let taxa_cartao = 0
+    let material_direto = 0
+
+
+
 
     // constante
     const FERIA = ((1 / 3) / 12) * 100
     const SALARIO_13 = (1 / 12) * 100
     const FGTS = 8
     const MULTA = FGTS * 0.4
-    const MATERIAL_DIRETO = 200
-    const DESLOCAMENTO = 100 * 1.2
-    const ALIMENTACAO = 50
-    const BOTLETO = 0
-    const COMISSAO = 1 / 100
-    const TAXA_CARTAO = 2.50 / 100
-    const IMPOSTO = 5 / 100
-    const LUCRO = 20 / 100
 
 
     function calc_dado() {
@@ -68,11 +74,11 @@ $(document).ready(function () {
         hora_tec_colab = custo_mod + (gasto_fixo / 2)
         hora_tec_emp = (custo_mod * 2) + gasto_fixo
         hora_tec = hora_tec_emp * horas
-        preco_sug = (hora_tec + MATERIAL_DIRETO + DESLOCAMENTO + ALIMENTACAO + BOTLETO) / (1 - (COMISSAO + TAXA_CARTAO + IMPOSTO + LUCRO))
-        comissao_real = preco_sug * COMISSAO
-        taxa_cartao_real = preco_sug * TAXA_CARTAO
-        imposto_real = preco_sug * IMPOSTO
-        lucro_diferenca = preco_sug - hora_tec - MATERIAL_DIRETO - DESLOCAMENTO - ALIMENTACAO - BOTLETO - comissao_real - taxa_cartao_real - imposto_real
+        preco_sug = (hora_tec + material_direto + descolamento + alimentacao + boleto) / (1 - (comissao + taxa_cartao + imposto + lucro))
+        comissao_real = preco_sug * comissao
+        taxa_cartao_real = preco_sug * taxa_cartao
+        imposto_real = preco_sug * imposto
+        lucro_diferenca = preco_sug - hora_tec - material_direto - descolamento - alimentacao - boleto - comissao_real - taxa_cartao_real - imposto_real
         lucro_por = (lucro_diferenca / preco_sug) * 100
 
         atualizar_dados();
@@ -81,14 +87,14 @@ $(document).ready(function () {
     function atualizar_dados() {
 
         $('.campo_hora_tec').html(hora_tec.toFixed(2))
-        $('.campo_material_dir').html(MATERIAL_DIRETO.toFixed(2))
-        $('.campo_delocamento').html(DESLOCAMENTO.toFixed(2))
-        $('.campo_alimentacao').html(ALIMENTACAO.toFixed(2))
-        $('.campo_boleto').html(BOTLETO.toFixed(2))
-        $('.campo_comissao').html(COMISSAO * 100 + '%')
-        $('.campo_taxa_cartao').html(TAXA_CARTAO * 100 + '%')
-        $('.campo_imposto').html(IMPOSTO * 100 + '%')
-        $('.campo_lucro').html(LUCRO * 100 + '%')
+        $('.campo_material_dir').html(material_direto.toFixed(2))
+        $('.campo_delocamento').html(descolamento.toFixed(2))
+        $('.campo_alimentacao').html(alimentacao.toFixed(2))
+        $('.campo_boleto').html(boleto.toFixed(2))
+        $('.campo_comissao').html(comissao * 100 + '%')
+        $('.campo_taxa_cartao').html(taxa_cartao * 100 + '%')
+        $('.campo_imposto').html(imposto * 100 + '%')
+        $('.campo_lucro').html(lucro * 100 + '%')
         $('.campo_preco-sug').html(preco_sug.toFixed(2))
         $('.receita_venda').html(preco_sug.toFixed(2))
         $('.lucro_val').html(lucro_diferenca.toFixed(2))
@@ -131,8 +137,36 @@ $(document).ready(function () {
             gasto_func = parseFloat($(this).val());
         } else if ($(this).attr('id') == 'horas') {
             horas = parseFloat($(this).val());
+        } else if ($(this).attr('id') == 'imposto') {
+            imposto = parseFloat($(this).val()) / 100;
+        } else if ($(this).attr('id') == 'comissao') {
+            comissao = parseFloat($(this).val()) / 100;
+        } else if ($(this).attr('id') == 'lucro_procentagem') {
+            lucro = parseFloat($(this).val()) / 100;
+        } else if ($(this).attr('id') == 'descolamento') {
+            descolamento = parseFloat($(this).val()) * 1.2;
+        } else if ($(this).attr('id') == 'alimentacao') {
+            alimentacao = parseFloat($(this).val());
+        } else if ($(this).attr('id') == 'valor_selecionar' && $('.dados select').val() === '1') {
+            boleto = parseFloat($(this).val());
+            taxa_cartao = 0
+        } else if ($(this).attr('id') == 'valor_selecionar' && $('.dados select').val() === '2') {
+            taxa_cartao = parseFloat($(this).val()) / 100;
+            boleto = 0
+        } else if ($(this).attr('id') == 'material_direto') {
+            material_direto = parseFloat($(this).val());
         }
         calc_dado();
     });
+
+    $('.dados select').on('change', function () {
+        if ($(this).val() === '1') {
+            $('#valor_selecionar').attr('placeholder', 'Taxa do Boleto:')
+        } else if ($(this).val() === '2') {
+            $('#valor_selecionar').attr('placeholder', 'Taxa do Cartão:')
+        } else {
+            $('#valor_selecionar').attr('placeholder', '')
+        }
+    })
 
 })
