@@ -13,6 +13,10 @@ $(document).ready(function () {
     let hora_tec_colab = 0
     let hora_tec_emp = 0
     let hora_tec = 0
+    let lucro_diferenca = 0
+    let comissao_real = 0
+    let taxa_cartao_real = 0
+    let imposto_real = 0
 
     //  input tela
     let salario = 0
@@ -32,6 +36,7 @@ $(document).ready(function () {
     let gasto_func = 0
     let horas = 0
     let preco_sug = 0
+    let lucro_por = 0
 
     // constante
     const FERIA = ((1 / 3) / 12) * 100
@@ -64,22 +69,33 @@ $(document).ready(function () {
         hora_tec_emp = (custo_mod * 2) + gasto_fixo
         hora_tec = hora_tec_emp * horas
         preco_sug = (hora_tec + MATERIAL_DIRETO + DESLOCAMENTO + ALIMENTACAO + BOTLETO) / (1 - (COMISSAO + TAXA_CARTAO + IMPOSTO + LUCRO))
+        comissao_real = preco_sug * COMISSAO
+        taxa_cartao_real = preco_sug * TAXA_CARTAO
+        imposto_real = preco_sug * IMPOSTO
+        lucro_diferenca = preco_sug - hora_tec - MATERIAL_DIRETO - DESLOCAMENTO - ALIMENTACAO - BOTLETO - comissao_real - taxa_cartao_real - imposto_real
+        lucro_por = (lucro_diferenca / preco_sug) * 100
 
         atualizar_dados();
     }
 
     function atualizar_dados() {
 
-        $('#campo_hora_tec').html(hora_tec.toFixed(2))
-        $('#campo_material_dir').html(MATERIAL_DIRETO.toFixed(2))
-        $('#campo_delocamento').html(DESLOCAMENTO.toFixed(2))
-        $('#campo_alimentacao').html(ALIMENTACAO.toFixed(2))
-        $('#campo_boleto').html(BOTLETO.toFixed(2))
-        $('#campo_comissao').html(COMISSAO * 100 + '%')
-        $('#campo_taxa_cartao').html(TAXA_CARTAO * 100 + '%')
-        $('#campo_imposto').html(IMPOSTO * 100 + '%')
-        $('#campo_lucro').html(LUCRO * 100 + '%')
-        $('#campo_preco-sug').html(preco_sug.toFixed(2))
+        $('.campo_hora_tec').html(hora_tec.toFixed(2))
+        $('.campo_material_dir').html(MATERIAL_DIRETO.toFixed(2))
+        $('.campo_delocamento').html(DESLOCAMENTO.toFixed(2))
+        $('.campo_alimentacao').html(ALIMENTACAO.toFixed(2))
+        $('.campo_boleto').html(BOTLETO.toFixed(2))
+        $('.campo_comissao').html(COMISSAO * 100 + '%')
+        $('.campo_taxa_cartao').html(TAXA_CARTAO * 100 + '%')
+        $('.campo_imposto').html(IMPOSTO * 100 + '%')
+        $('.campo_lucro').html(LUCRO * 100 + '%')
+        $('.campo_preco-sug').html(preco_sug.toFixed(2))
+        $('.receita_venda').html(preco_sug.toFixed(2))
+        $('.lucro_val').html(lucro_diferenca.toFixed(2))
+        $('#campo_comissao_real').html(comissao_real.toFixed(2))
+        $('#campo_taxa_cartao_real').html(taxa_cartao_real.toFixed(2))
+        $('#campo_imposto_real').html(imposto_real.toFixed(2))
+        $('.campo_lucro_porc').html(lucro_por.toFixed(0) + '%')
 
     };
 
